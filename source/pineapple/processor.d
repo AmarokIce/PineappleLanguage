@@ -6,9 +6,9 @@ import esstool;
 
 import std.string;
 
-string replaceCommand(string og, string target) => cleanSpace(og.replace(target, ""))
-    .outOfLineSplit;
 string outOfLineSplit(string og) => og[0 .. $ - 1];
+string replaceCommand(string og, string target) =>
+    cleanSpace(og.replace(target, "")).outOfLineSplit;
 
 void initialize(string filePath)
 {
@@ -72,7 +72,6 @@ string[] scanLine(string line)
         commands ~= flag;
         return commands;
     }
-
 }
 
 string checkModule(string line)
@@ -103,7 +102,8 @@ string checkVariableCommand(string line)
     // TODO - Callback with a funaction.
 
     auto command = "VAR ";
-    if (line.startWith("var")) {
+    if (line.startWith("var"))
+    {
         line = line.replaceCommand("var");
         auto kv = line.split("=");
 
@@ -112,19 +112,18 @@ string checkVariableCommand(string line)
         auto name = cleanSpace(tp[0]);
         auto s_type = cleanSpace(tp[1]);
 
-         command ~= s_type ~ " " ~ name;
+        command ~= s_type ~ " " ~ name;
 
         return len(kv) == 1 ? command : command ~ " " ~ kv[1];
     }
 
     auto index = indexOf(line, "=");
-    if (index == -1) {
+    if (index == -1)
+    {
         return "";
     }
 
-
 }
-
 
 /* Util Tools */
 

@@ -1,30 +1,5 @@
 module pineapple.types;
 
-import std.string;
-
-struct PFunction
-{
-    string name;
-    PFunctionArgs*[] args;
-    PType typeReturn;
-    int startLines = 0;
-
-    string[] commands;
-}
-
-struct PFunctionArgs
-{
-    string name;
-    PType type;
-}
-
-struct PField
-{
-    string name;
-    void* value;
-    PType type;
-}
-
 enum PType
 {
     VOID,
@@ -39,6 +14,8 @@ enum PType
 
 PType createTypeBy(string type)
 {
+    import std.string;
+
     final switch (type)
     {
     case "string":
