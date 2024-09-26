@@ -2,14 +2,14 @@ module pineapple.types;
 
 enum PType
 {
-    VOID,
-    STRING,
-    INTEGER,
-    FLOAT,
-    BOOLEAN,
-    BYTE,
-    ARRAY,
-    MAP
+    VOID = "VOID",
+    STRING = "STRING",
+    INTEGER = "INTEGER",
+    FLOAT = "FLOAT",
+    BOOLEAN = "BOOLEAN",
+    BYTE = "BYTE",
+    ARRAY = "ARRAY",
+    MA = "MAP",
 }
 
 PType createTypeBy(string type)

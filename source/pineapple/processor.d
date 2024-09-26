@@ -1,19 +1,18 @@
 module pineapple.processor;
 
-import pineapple.types;
-
+import pineapple;
 import esstool;
-
 import std.string;
-
-string outOfLineSplit(string og) => og[0 .. $ - 1];
-string replaceCommand(string og, string target) =>
-    cleanSpace(og.replace(target, "")).outOfLineSplit;
 
 void initialize(string filePath)
 {
     string[] lines = filePath.readAllLines;
     string[] commands = new string[0];
+
+    foreach (string l; lines)
+    {
+        clearSpace(l);
+    }
 
     string holder = "";
     for (int i = 1; i < lines.length; i++)
@@ -81,9 +80,10 @@ string checkModule(string line)
         return "";
     }
 
-    line = line.replaceCommand("module");
+    string[] kv = line.split(" ");
+    string path = kv[1].replace(";", "");
 
-    return "MODULE " ~ line;
+    return "MODULE " ~ path;
 }
 
 string checkImport(string line)
@@ -93,42 +93,69 @@ string checkImport(string line)
         return "";
     }
 
-    line = line.replaceCommand("import");
-    return "IMPORT " ~ line;
+    string[] kv = line.split(" ");
+    string path = kv[1].replace(";", "");
+
+    return "IMPORT " ~ path;
 }
 
-string checkVariableCommand(string line)
+string[] checkVariableCommand(string line)
 {
     // TODO - Callback with a funaction.
 
-    auto command = "VAR ";
-    if (line.startWith("var"))
+    string[] commands = new string[0];
+
+    bool flag = line.startsWith("var") ? true : false;
+
+    string name;
+    string value;
+    string type;
+
+    if (indexOf(line, "=") != -1)
     {
-        line = line.replaceCommand("var");
-        auto kv = line.split("=");
-
-        auto tp = kv[0].split(":");
-
-        auto name = cleanSpace(tp[0]);
-        auto s_type = cleanSpace(tp[1]);
-
-        command ~= s_type ~ " " ~ name;
-
-        return len(kv) == 1 ? command : command ~ " " ~ kv[1];
+        auto kv = line.split("=")[0];
+        name = clearSpace(kv[0].split(" ")[1]);
+        value = clearSpace(kv[1]);
+    } else {
+        name = clearSpace(line.split(" ")[1]);
     }
 
-    auto index = indexOf(line, "=");
-    if (index == -1)
-    {
-        return "";
+    if (value.startsWith("do")) {
+        // TODO - Call funaction;
     }
+
+    if (flag) {
+        commands ~= "VAR CREATE " ~ createTypeBy(type) ~ " " ~ name;
+    }
+
+    commands ~= "VAR SET " ~ name ~ " " ~ value;
 
 }
 
+string checkFunctionCommand(string line)
+{
+    auto commands = new string[0];
+
+    if (!line.startsWith("fn"))
+    {
+        // TODO
+    }
+}
+
+// TODO - Script
+
 /* Util Tools */
 
-string cleanSpace(string str)
+string clearSpace(string str)
 {
+    StringBuilder sb = new StringBuilder(str);
+    while (sb.indexOf("  "))
+    {
+        sb.clear().append(sb.substring(sb.asString.replace("  ", " ")));
+    }
+
+    str = sb.asString;
+
     while (str.startsWith(" "))
     {
         str = str[1 .. $];
@@ -149,7 +176,7 @@ string[] readAllLines(string filePath)
     LineReader reader = new LineReader(filePath);
     while (reader.readly)
     {
-        lines ~= cleanSpace(reader.read);
+        lines ~= clearSpace(reader.read);
     }
 
     return lines;
