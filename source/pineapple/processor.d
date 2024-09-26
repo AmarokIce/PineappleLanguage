@@ -116,15 +116,24 @@ string[] checkVariableCommand(string line)
         auto kv = line.split("=")[0];
         name = clearSpace(kv[0].split(" ")[1]);
         value = clearSpace(kv[1]);
-    } else {
+    }
+    else if (!flag)
+    {
+        return commands;
+    }
+    else
+    {
+
         name = clearSpace(line.split(" ")[1]);
     }
 
-    if (value.startsWith("do")) {
+    if (value.startsWith("do"))
+    {
         // TODO - Call funaction;
     }
 
-    if (flag) {
+    if (flag)
+    {
         commands ~= "VAR CREATE " ~ createTypeBy(type) ~ " " ~ name;
     }
 
@@ -132,14 +141,42 @@ string[] checkVariableCommand(string line)
 
 }
 
-string checkFunctionCommand(string line)
+string[] checkFunctionCommand(string line)
 {
     auto commands = new string[0];
 
     if (!line.startsWith("fn"))
     {
-        // TODO
+        return commands;
     }
+
+    line = clearSpace(line[2 .. $ - 1]);
+    string[] nv = line.split(":");
+
+    string type;
+    string name;
+    string[] args;
+
+    type = nv.length > 1 ? createTypeBy(clearSpace(nv[1])) : PType.VOID;
+    name = clearSpace(nv[0].split("(")[0]);
+
+    string s_args = clearSpace(nv[0].split("(")[1])[0 .. $ - 1];
+    foreach (string agr; s_args.split(","))
+    {
+        string arg_name;
+        string arg_type;
+
+        string[] kv = arg.split(":");
+        arg_name = clearSpace(kv[0]);
+        arg_type = createTypeBy(clearSpace(kv[1]));
+
+        args ~= "ARG " ~ arg_name ~ " " ~ arg_name;
+    }
+
+    commands ~= "FN " ~ name;
+    comamnds ~= "FN RETURN " ~ type;
+    commands ~= args;
+    commands ~= "ARG END";
 }
 
 // TODO - Script
