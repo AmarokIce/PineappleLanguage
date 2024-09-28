@@ -71,6 +71,24 @@ string[] scanLine(string line)
         commands ~= flag;
         return commands;
     }
+
+    string[] flagArray;
+
+    flagArray = checkVariableCommand(line);
+    if (len(flagArray) > 0)
+    {
+        commands ~= flagArray;
+        return commands;
+    }
+
+    flagArray = checkFunctionCommand(line);
+    if (len(flagArray) > 0)
+    {
+        commands ~= flagArray;
+        return commands;
+    }
+
+    // TODO if, for, read, write, readLine, writeLine, buffered
 }
 
 string checkModule(string line)
@@ -138,7 +156,6 @@ string[] checkVariableCommand(string line)
     }
 
     commands ~= "VAR SET " ~ name ~ " " ~ value;
-
 }
 
 string[] checkFunctionCommand(string line)
@@ -177,6 +194,24 @@ string[] checkFunctionCommand(string line)
     comamnds ~= "FN RETURN " ~ type;
     commands ~= args;
     commands ~= "ARG END";
+}
+
+string[] checkIf(string line)
+{
+    string[] commands = new string[];
+    if (!line.startsWith("if"))
+    {
+        return commands;
+    }
+
+    auto indexStart = line.indexOf("(");
+    auto indexEnd = line.indexOf(")");
+
+    auto booleanFlagString = line[indexStart + 1, indexEnd];
+    bool booleanFlag;
+
+    // TODO Check boolean
+    // TODO else if / else
 }
 
 // TODO - Script
