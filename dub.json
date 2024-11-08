@@ -2,15 +2,10 @@
 	"authors": [
 		"AmarokIce"
 	],
-	"dependencies": {
-		"esstool": {
-			"path": "../esstool"
-		},
-		"log4d": {
-			"path": "../log4d"
-		}
-	},
 	"copyright": "Copyright © 2024, AmarokIce",
+	"dependencies": {
+		"esstool": "~>0.0.3"
+	},
 	"description": "A simple programming language.",
 	"license": "MPL-2.0",
 	"name": "pineapplelang"

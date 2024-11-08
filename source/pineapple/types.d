@@ -1,7 +1,22 @@
 module pineapple.types;
 
-enum PType
-{
+/* Command struct */
+
+struct CommandData {
+    string name;
+    DataType data;
+    VeriableType type;
+    void* command;
+}
+
+/* Data types */
+
+enum DataType {
+    VERIABLE,
+    FUNCTION
+}
+
+enum VeriableType {
     VOID = "VOID",
     STRING = "STRING",
     INTEGER = "INTEGER",
@@ -9,36 +24,32 @@ enum PType
     BOOLEAN = "BOOLEAN",
     BYTE = "BYTE",
     ARRAY = "ARRAY",
-    MA = "MAP",
+    MAP = "MAP",
 }
 
-PType createTypeBy(string type)
-{
+VeriableType createTypeBy(string type) {
     import std.string;
 
-    final switch (type)
-    {
+    final switch (type) {
     case "string":
-        return PType.STRING;
+        return VeriableType.STRING;
     case "int":
-        return PType.INTEGER;
+        return VeriableType.INTEGER;
     case "float":
-        return PType.FLOAT;
+        return VeriableType.FLOAT;
     case "boolean":
-        return PType.BOOLEAN;
+        return VeriableType.BOOLEAN;
     case "byte":
-        return PType.BYTE;
+        return VeriableType.BYTE;
     }
 
-    if (type.startsWith("array"))
-    {
-        return PType.ARRAY;
+    if (type.startsWith("array")) {
+        return VeriableType.ARRAY;
     }
 
-    if (type.startsWith("map"))
-    {
-        return PType.MAP;
+    if (type.startsWith("map")) {
+        return VeriableType.MAP;
     }
 
-    return PType.VOID;
+    return VeriableType.VOID;
 }

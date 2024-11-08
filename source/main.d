@@ -7,9 +7,8 @@ import std.stdio : writeln;
 //     man!(`What can i say`) ? "manba" : "out!";
 // }
 
-
-void main(string[] args)
-{
+void main(string[] args) {
+    import esstool;
 
     import std.string : replace;
 

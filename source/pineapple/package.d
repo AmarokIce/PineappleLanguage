@@ -1,5 +1,6 @@
 module pineapple;
 
-public import pineapple.calculator;
-public import pineapple.processor;
-public import pineapple.types;
+public:
+import pineapple.calculator;
+import pineapple.processor;
+import pineapple.types;
